@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>🎂 Happy Birthday Duy 🎂</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, #222, #000);
+  color: #fff;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 40px;
+  font-size: 3rem;
+  text-shadow: 0 0 15px rgba(0,255,153,0.4);
+}
+
+p {
+  opacity: 0.85;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #00ff99, transparent);
+  margin: 30px 0;
+}
+
+.card {
+  background: #111;
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.7);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #1c1c1c;
+  border: 1px solid #222;
+  border-radius: 8px;
+  color: #fff;
+}
+
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #00ff99;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #00cc77;
+}
+
+pre {
+  background: #0b0b0b;
+  padding: 15px;
+  border-radius: 10px;
+  overflow-x: auto;
+  color: #00ff99;
+  font-family: Consolas, monospace;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 10px rgba(0,255,153,0.15);
+}
+
+.letter {
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+footer {
+  margin: 40px 0;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎉 Happy Birthday Duy 🎉</h1>
+  <p class="subtitle">Ae ghé web để lại lời chúc nha ❤️</p>
+</div>
+
+<div class="container">
+
+  <div class="divider"></div>
+
+  <!-- Lua trang trí -->
+<!-- Lua trang trí -->
+<div class="card lua-card">
+<pre>
+birthday.lua
+local Duy = {
+  level = "UP 🎂",
+  today = true,
+  thanks = "Cảm ơn ae đã ghé web!"
+}
+
+function sayThanks()
+  print(Duy.thanks)
+end
+
+sayThanks()
+</pre>
+</div>
+
+<div class="card lua-card">
+<pre id="realtime">
+-- system_time.lua
+-- loading...
+</pre>
+</div>
+
+  <div class="divider"></div>
+
+  <div class="card">
+    <h2>✉️ Viết thư chúc mừng</h2>
+    <input id="name" placeholder="Tên của bạn">
+    <textarea id="message" placeholder="Viết lời chúc cho Duy..."></textarea>
+    <button onclick="saveLetter()">Gửi thư 🎂</button>
+  </div>
+
+  <div class="card">
+    <h2>📬 Thư đã nhận</h2>
+    <div id="letters"></div>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 | Made by Duy 🎮💻
+</footer>
+
+<script>
+// Confetti 
+for (let i = 0; i < 35; i++) {
+  let c = document.createElement("div");
+  c.style.position = "fixed";
+  c.style.top = "-10px";
+  c.style.left = Math.random() * 100 + "vw";
+  c.style.width = "8px";
+  c.style.height = "8px";
+  c.style.background = `hsl(${Math.random()*360},100%,50%)`;
+  c.style.opacity = 0.8;
+  c.style.animation = `fall ${3 + Math.random()*3}s linear infinite`;
+  document.body.appendChild(c);
+}
+
+const style = document.createElement("style");
+style.innerHTML = `
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}`;
+document.head.appendChild(style);
+
+// Lưu & hiển thị thư (style Lua)
+function saveLetter() {
+  const name = document.getElementById("name").value || "Ẩn danh";
+  const message = document.getElementById("message").value;
+
+  if (!message.trim()) return alert("Viết gì đó đi bạn ơi 😅");
+
+  const letters = JSON.parse(localStorage.getItem("birthdayLetters") || "[]");
+  letters.push({ name, message, time: new Date().toLocaleString() });
+
+  localStorage.setItem("birthdayLetters", JSON.stringify(letters));
+  document.getElementById("message").value = "";
+
+  loadLetters();
+}
+
+function loadLetters() {
+  const letters = JSON.parse(localStorage.getItem("birthdayLetters") || "[]");
+  const box = document.getElementById("letters");
+  box.innerHTML = "";
+
+  letters.forEach(l => {
+    const div = document.createElement("div");
+    div.className = "letter";
+    div.innerHTML = `
+<pre>
+letter = {
+  from = "${l.name}",
+  message = [[${l.message}]],
+  time = "${l.time}"
+}
+</pre>`;
+    box.appendChild(div);
+  });
+}
+
+loadLetters();
+</script>
+
+<script>
+function updateLuaTime() {
+  const now = new Date();
+  const pad = n => n.toString().padStart(2, "0");
+
+  const time = `-- system_time.lua
+while true do
+  print(os.date("${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} - ${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}"))
+  wait(1)
+end`;
+
+  document.getElementById("realtime").textContent = time;
+}
+
+setInterval(updateLuaTime, 1000);
+updateLuaTime();
+</script>
+<script>
+/* =========================
+   EASTER EGGS (MOBILE OK)
+========================= */
+
+// 🥚 Easter 1: Tap 5 lần vào title
+let titleTap = 0;
+const title = document.querySelector("h1");
+
+title.addEventListener("click", () => {
+  titleTap++;
+  if (titleTap === 5) {
+    document.body.style.background =
+      "linear-gradient(135deg, #00ff99, #0066ff)";
+    alert("🧪 Dev mode activated!");
+    titleTap = 0;
+  }
+});
+
+// 🥚 Easter 2: Long press vào code block
+document.querySelectorAll("pre").forEach(pre => {
+  let pressTimer;
+
+  pre.addEventListener("touchstart", () => {
+    pressTimer = setTimeout(() => {
+      alert(
+`lua: birthday.lua:13: attempt to index local 'Duy' (a legend value)
+stack traceback:
+    [C]: in function 'print'
+    birthday.lua:13: in main chunk`
+      );
+    }, 1200); // giữ ~1.2s
+  });
+
+  pre.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
+  });
+});
+
+// 🥚 Easter 3: Tap 3 lần footer
+let footerTap = 0;
+const footer = document.querySelector("footer");
+
+footer.addEventListener("click", () => {
+  footerTap++;
+  if (footerTap === 3) {
+    alert("🎁 Secret unlocked!\n Đừng chúc t tuổi mới code có nhiều bug!!❤️");
+    footerTap = 0;
+  }
+});
+</script>
+</body>
+</html>
